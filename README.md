@@ -1,2 +1,1 @@
-# projetos_cdt
-Repositório dedicado ao estudo e prática de Metodologias Ágeis. Este espaço visa compartilhar conhecimento sobre os frameworks mais populares (Scrum, Kanban, etc.), princípios de desenvolvimento ágil e ferramentas que promovem flexibilidade e eficiência. Sinta-se à vontade para explorar, aprender e contribuir!
+A Barbearia Andrades é um sistema simples desenvolvido em Python com o objetivo de simular o funcionamento básico de uma barbearia. O projeto permite realizar agendamentos, cancelar horários, visualizar os serviços disponíveis, acessar informações de contato e avaliar o atendimento. O sistema foi criado para praticar conceitos fundamentais de programação, como condicionais, loops, funções, variáveis e interação com o usuário no terminal.
