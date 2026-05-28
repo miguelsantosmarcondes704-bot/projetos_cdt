@@ -16,15 +16,15 @@ SERVICOS = {
     "7": ("Combo corte + barba", 50)
 }
 
-
+# Lista padrão de horários da barbearia
 HORARIOS_PADRAO = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:30"]
 
-
-COR_FUNDO = "#121212"      
-COR_CONTAINER = "#1E1E1E"   
-COR_BOTAO = "#0056b3"     
-COR_TEXTO = "#FFFFFF"     
-COR_SUBTEXTO = "#A0A0A0"   
+# --- PALETA DE CORES ---
+COR_FUNDO = "#121212"       # Preto
+COR_CONTAINER = "#1E1E1E"   # Cinza Escuro
+COR_BOTAO = "#0056b3"      # Azul Escuro / Destaque
+COR_TEXTO = "#FFFFFF"      # Branco
+COR_SUBTEXTO = "#A0A0A0"   # Cinza Claro
 
 def carregar_agendamentos():
     if not os.path.exists(ARQUIVO_BANCO):
@@ -49,9 +49,10 @@ class BarbeariaApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Barbearia Andrades")
-        self.root.geometry("650x550")
+        self.root.geometry("650x580")
         self.root.configure(bg=COR_FUNDO)
-      
+        
+        # Estilo para os Comboboxes
         style = ttk.Style()
         style.theme_use('clam')
         style.configure("TCombobox", fieldbackground=COR_CONTAINER, background=COR_BOTAO, foreground=COR_TEXTO)
@@ -73,22 +74,22 @@ class BarbeariaApp:
         linha.pack(fill="x", padx=20, pady=5)
 
     def criar_botao_voltar(self):
-        btn_voltar = tk.Button(self.root, text="Voltar ao Menu", font=("Helvetica", 10, "bold"), bg=COR_CONTAINER, fg=COR_TEXTO, activebackground=COR_BOTAO, activeforeground=COR_TEXTO, bd=0, padx=15, pady=8, command=self.mostrar_menu_principal)
+        btn_voltar = tk.Button(self.root, text="Voltar ao Menu", font=("Helvetica", 10, "bold"), bg=COR_CONTAINER, fg=COR_TEXTO, activebackground=COR_BOTAO, activeforeground=COR_TEXTO, bd=0, padx=15, pady=8, cursor="hand2", command=self.mostrar_menu_principal)
         btn_voltar.pack(side="bottom", pady=20)
 
     def mostrar_menu_principal(self):
         self.limpar_tela()
         
         # Título Principal
-        lbl_welcome = tk.Label(self.root, text="Barbearia Andrades", font=("Helvetica", 22, "bold"), fg=COR_TEXTO, bg=COR_FUNDO, pady=20)
+        lbl_welcome = tk.Label(self.root, text="Barbearia Andrades", font=("Helvetica", 22, "bold"), fg=COR_TEXTO, bg=COR_FUNDO, pady=15)
         lbl_welcome.pack()
         
         lbl_sub = tk.Label(self.root, text="Seja Bem-Vindo! Escolha uma opção:", font=("Helvetica", 11), fg=COR_SUBTEXTO, bg=COR_FUNDO)
         lbl_sub.pack(pady=5)
 
-        # Container dos botões
-        menu_frame = tk.Frame(self.root, bg=COR_CONTAINER, bd=1, relief="flat", padx=30, pady=20)
-        menu_frame.pack(pady=20)
+        # Container dos botões do menu
+        menu_frame = tk.Frame(self.root, bg=COR_CONTAINER, bd=1, relief="flat", padx=30, pady=15)
+        menu_frame.pack(pady=15)
 
         botoes = [
             ("1 - Agendar Horário", self.tela_agendar),
@@ -100,10 +101,24 @@ class BarbeariaApp:
 
         for texto, comando in botoes:
             btn = tk.Button(menu_frame, text=texto, font=("Helvetica", 11, "bold"), bg=COR_FUNDO, fg=COR_TEXTO, activebackground=COR_BOTAO, activeforeground=COR_TEXTO, bd=0, width=25, height=2, cursor="hand2", command=comando)
-            btn.pack(pady=8)
+            btn.pack(pady=6)
             
-        btn_sair = tk.Button(self.root, text="Sair", font=("Helvetica", 10, "bold"), bg="#8b0000", fg=COR_TEXTO, bd=0, width=10, pady=5, command=self.root.quit)
-        btn_sair.pack(side="bottom", pady=20)
+        # Botão Sair - Atualizado e Ajustado
+        btn_sair = tk.Button(
+            self.root, 
+            text="Sair do Sistema", 
+            font=("Helvetica", 11, "bold"), 
+            bg="#8b0000", 
+            fg=COR_TEXTO, 
+            activebackground="#ba0000", 
+            activeforeground=COR_TEXTO,
+            bd=0, 
+            width=25, 
+            pady=10, 
+            cursor="hand2", 
+            command=self.root.quit
+        )
+        btn_sair.pack(side="bottom", pady=25)
 
     def tela_agendar(self):
         self.limpar_tela()
@@ -112,12 +127,12 @@ class BarbeariaApp:
         form_frame = tk.Frame(self.root, bg=COR_CONTAINER, padx=20, pady=20)
         form_frame.pack(pady=10, fill="both", expand=True, padx=40)
 
-      
+        # Campo Nome
         tk.Label(form_frame, text="Nome do Cliente:", font=("Helvetica", 10, "bold"), fg=COR_TEXTO, bg=COR_CONTAINER).grid(row=0, column=0, sticky="w", pady=5)
         ent_nome = tk.Entry(form_frame, font=("Helvetica", 11), bg=COR_FUNDO, fg=COR_TEXTO, insertbackground=COR_TEXTO, bd=1, relief="solid")
         ent_nome.grid(row=0, column=1, sticky="ew", pady=5, padx=10)
 
-       
+        # Campo Serviço (Combobox)
         tk.Label(form_frame, text="Serviço desejado:", font=("Helvetica", 10, "bold"), fg=COR_TEXTO, bg=COR_CONTAINER).grid(row=1, column=0, sticky="w", pady=5)
         
         lista_servicos_texto = [f"{nome} (R$ {preco})" for cod, (nome, preco) in SERVICOS.items()]
@@ -131,7 +146,7 @@ class BarbeariaApp:
         ent_data.insert(0, datetime.now().strftime("%d/%m/%Y"))
         ent_data.grid(row=2, column=1, sticky="ew", pady=5, padx=10)
 
-     
+        # Campo Horário
         tk.Label(form_frame, text="Horário:", font=("Helvetica", 10, "bold"), fg=COR_TEXTO, bg=COR_CONTAINER).grid(row=3, column=0, sticky="w", pady=5)
         cb_horario = ttk.Combobox(form_frame, state="readonly", font=("Helvetica", 10))
         cb_horario.grid(row=3, column=1, sticky="ew", pady=5, padx=10)
@@ -199,8 +214,8 @@ class BarbeariaApp:
             messagebox.showinfo("Sucesso", f"Agendamento confirmado para {nome} às {horario}!")
             self.mostrar_menu_principal()
 
-        btn_confirmar = tk.Button(form_frame, text="Confirmar Agendamento", font=("Helvetica", 11, "bold"), bg=COR_BOTAO, fg=COR_TEXTO, bd=0, padding=10, cursor="hand2", command=confirmar_agendamento)
-        btn_confirmar.grid(row=4, column=0, columnspan=2, pady=20)
+        btn_confirmar = tk.Button(form_frame, text="Confirmar Agendamento", font=("Helvetica", 11, "bold"), bg=COR_BOTAO, fg=COR_TEXTO, activebackground="#004085", activeforeground=COR_TEXTO, bd=0, pady=10, cursor="hand2", command=confirmar_agendamento)
+        btn_confirmar.grid(row=4, column=0, columnspan=2, pady=20, sticky="ew", padx=10)
 
         self.criar_botao_voltar()
 
@@ -231,7 +246,7 @@ class BarbeariaApp:
                 messagebox.showinfo("Sucesso", "Agendamento(s) cancelado(s) com sucesso!")
                 self.mostrar_menu_principal()
 
-        btn_cancelar = tk.Button(cancel_frame, text="Remover Agendamento", font=("Helvetica", 11, "bold"), bg="#8b0000", fg=COR_TEXTO, bd=0, pady=8, cursor="hand2", command=acao_cancelar)
+        btn_cancelar = tk.Button(cancel_frame, text="Remover Agendamento", font=("Helvetica", 11, "bold"), bg="#8b0000", fg=COR_TEXTO, activebackground="#ba0000", activeforeground=COR_TEXTO, bd=0, pady=8, cursor="hand2", command=acao_cancelar)
         btn_cancelar.pack(pady=15)
 
         self.criar_botao_voltar()
@@ -240,7 +255,6 @@ class BarbeariaApp:
         self.limpar_tela()
         self.criar_cabecalho("Lista de Agendamentos")
 
-    
         canvas = tk.Canvas(self.root, bg=COR_FUNDO, highlightthickness=0)
         scrollbar = tk.Scrollbar(self.root, orient="vertical", command=canvas.yview)
         scroll_frame = tk.Frame(canvas, bg=COR_FUNDO)
@@ -288,7 +302,6 @@ class BarbeariaApp:
             lbl_preco = tk.Label(row_frame, text=f"R$ {preco:.2f}", font=("Helvetica", 11), fg=COR_BOTAO, bg=COR_CONTAINER)
             lbl_preco.pack(side="right")
             
-            # Linha fina divisória
             div = tk.Frame(tabela_frame, height=1, bg=COR_FUNDO)
             div.pack(fill="x", pady=2)
 
